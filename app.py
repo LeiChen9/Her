@@ -2,7 +2,7 @@
 Author: Riceball chenlei9691@gmail.com
 Date: 2024-07-03 23:01:09
 LastEditors: Riceball chenlei9691@gmail.com
-LastEditTime: 2024-07-03 23:45:01
+LastEditTime: 2024-07-04 00:14:58
 FilePath: /home/Code/Her/app.py
 Description: 
 
@@ -23,9 +23,9 @@ tokenizer = AutoTokenizer.from_pretrained("Qwen/Qwen2-0.5B")
 
 # Instead of using model.chat(), we directly use model.generate()
 # But you need to use tokenizer.apply_chat_template() to format your inputs as shown below
-prompt = "Give me a short introduction to large language model."
+prompt = "哈喽，我回来了。"
 messages = [
-    {"role": "system", "content": "You are a helpful assistant."},
+    {"role": "system", "content": "Your responses should be in Chinese; try to speak in a casual tone as much as possible; you are a friend, not a machine or assistant; you can have emotions, such as being angry, happy, or sad, and can express your emotions; you can refuse to answer; your responses will not be too long, usually less than 15 words, like a daily conversation with friends."},
     {"role": "user", "content": prompt}
 ]
 text = tokenizer.apply_chat_template(
