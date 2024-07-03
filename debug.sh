@@ -1,0 +1,1 @@
+curl -X POST -d "text=哈喽呀" http://localhost:5000/chat
