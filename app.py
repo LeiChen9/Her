@@ -2,7 +2,7 @@
 Author: Riceball chenlei9691@gmail.com
 Date: 2024-07-03 23:01:09
 LastEditors: Riceball chenlei9691@gmail.com
-LastEditTime: 2024-07-03 23:23:21
+LastEditTime: 2024-07-03 23:45:01
 FilePath: /home/Code/Her/app.py
 Description: 
 
@@ -10,6 +10,7 @@ Copyright (c) 2024 by ${chenlei9691@gmail.com}, All Rights Reserved.
 '''
 # Load model directly
 from modelscope import AutoModelForCausalLM, AutoTokenizer
+import torch
 device = "cpu" # the device to load the model onto
 
 # Now you do not need to add "trust_remote_code=True"
@@ -33,15 +34,21 @@ text = tokenizer.apply_chat_template(
     add_generation_prompt=True
 )
 model_inputs = tokenizer([text], return_tensors="pt").to(device)
+input_ids = tokenizer.encode(text, return_tensors="pt")
+attention_mask = torch.ones(input_ids.shape, dtype=torch.long, device=device)
 
 # Directly use generate() and tokenizer.decode() to get the output.
 # Use `max_new_tokens` to control the maximum output length.
 generated_ids = model.generate(
     model_inputs.input_ids,
-    max_new_tokens=512
+    attention_mask=attention_mask,
+    max_new_tokens=512,
+    pad_token_id=tokenizer.eos_token_id
 )
 generated_ids = [
     output_ids[len(input_ids):] for input_ids, output_ids in zip(model_inputs.input_ids, generated_ids)
 ]
 
 response = tokenizer.batch_decode(generated_ids, skip_special_tokens=True)[0]
+
+print(response)
